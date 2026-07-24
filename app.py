@@ -822,44 +822,6 @@ def load_data_from_db():
     finally: db.close()
 
 st.sidebar.header("Controls")
-if "nde_uploader_key" not in st.session_state:
-    st.session_state.nde_uploader_key = 0
-
-uploaded_files = st.sidebar.file_uploader(
-    "Upload NDE Reports",
-    type="pdf",
-    accept_multiple_files=True,
-    key=f"nde_uploader_{st.session_state.nde_uploader_key}"
-)
-if st.sidebar.button("Process Uploaded Reports"):
-    if uploaded_files:
-        with st.status("Processing reports...", expanded=True) as status:
-            db = get_db_session()
-            existing_ids = {id_tuple[0] for id_tuple in db.query(Weld.weld_id).all()}
-            success_count = 0; error_files = []
-            for uploaded_file in uploaded_files:
-                try:
-                    status.update(label=f"Processing {uploaded_file.name}...")
-                    list_of_welds = parse_nde_report(uploaded_file)
-                    for weld_data in list_of_welds:
-                        weld_id = weld_data['weld_id']
-                        if weld_id in existing_ids: continue
-                        new_weld = Weld(**weld_data)
-                        db.add(new_weld)
-                        existing_ids.add(weld_id); success_count += 1
-                except Exception as e:
-                    error_files.append(uploaded_file.name)
-                    st.sidebar.error(f"Error parsing {uploaded_file.name}")
-                    with st.sidebar.expander("See error details"): st.code(traceback.format_exc())
-            db.commit(); db.close()
-            status.update(label=f"Processing complete. Added {success_count} new weld records.", state="complete", expanded=False)
-        if error_files: st.sidebar.error(f"Failed to process: {', '.join(error_files)}")
-        # Clear the uploader after processing (same technique as logo)
-        st.session_state.nde_uploader_key += 1
-        st.rerun()
-    else: st.sidebar.warning("No files uploaded.")
-
-st.sidebar.markdown("---")
 dark_mode = st.sidebar.toggle("Dark Mode", value=False, key="dark_mode_toggle")
 
 if dark_mode:
@@ -1535,7 +1497,58 @@ else:
         st.session_state.admin_authenticated = False
         st.rerun()
 
+    # Upload NDE reports (admin only)
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Upload NDE Reports")
+    if "nde_uploader_key" not in st.session_state:
+        st.session_state.nde_uploader_key = 0
+
+    uploaded_files = st.sidebar.file_uploader(
+        "Select NDE PDF reports",
+        type="pdf",
+        accept_multiple_files=True,
+        key=f"nde_uploader_{st.session_state.nde_uploader_key}"
+    )
+    if st.sidebar.button("Process Uploaded Reports", key="btn_process_nde"):
+        if uploaded_files:
+            with st.status("Processing reports...", expanded=True) as status:
+                db = get_db_session()
+                existing_ids = {id_tuple[0] for id_tuple in db.query(Weld.weld_id).all()}
+                success_count = 0
+                error_files = []
+                for uploaded_file in uploaded_files:
+                    try:
+                        status.update(label=f"Processing {uploaded_file.name}...")
+                        list_of_welds = parse_nde_report(uploaded_file)
+                        for weld_data in list_of_welds:
+                            weld_id = weld_data['weld_id']
+                            if weld_id in existing_ids:
+                                continue
+                            new_weld = Weld(**weld_data)
+                            db.add(new_weld)
+                            existing_ids.add(weld_id)
+                            success_count += 1
+                    except Exception as e:
+                        error_files.append(uploaded_file.name)
+                        st.sidebar.error(f"Error parsing {uploaded_file.name}")
+                        with st.sidebar.expander("See error details"):
+                            st.code(traceback.format_exc())
+                db.commit()
+                db.close()
+                status.update(
+                    label=f"Processing complete. Added {success_count} new weld records.",
+                    state="complete",
+                    expanded=False
+                )
+            if error_files:
+                st.sidebar.error(f"Failed to process: {', '.join(error_files)}")
+            st.session_state.nde_uploader_key += 1
+            st.rerun()
+        else:
+            st.sidebar.warning("No files uploaded.")
+
     # Clear all weld entries
+    st.sidebar.markdown("---")
     confirm_clear_data = st.sidebar.checkbox(
         "I understand this will permanently delete ALL weld records",
         key="confirm_clear_data"
