@@ -835,221 +835,236 @@ dark_mode = st.sidebar.toggle("Dark Mode", value=False, key="dark_mode_toggle")
 if dark_mode:
     st.markdown("""
     <style>
-        /* ========== DARK THEME — Studio quality ========== */
+        /* ========== DARK THEME — Cloud-hardened ========== */
         :root {
-            --bg: #070B14;
-            --surface: #0F1623;
-            --surface-2: #151E2E;
-            --border: #1E2A3A;
-            --text: #E8EEF7;
-            --text-muted: #8B9CB3;
-            --accent: #38BDF8;
-            --accent-hover: #0EA5E9;
-            --success: #34D399;
-            --warning: #FBBF24;
-            --error: #F87171;
-            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-            --radius: 14px;
+            --bg: #070B14 !important;
+            --surface: #0F1623 !important;
+            --surface-2: #151E2E !important;
+            --border: #1E2A3A !important;
+            --text: #E8EEF7 !important;
+            --text-muted: #8B9CB3 !important;
+            --accent: #38BDF8 !important;
+            --radius: 14px !important;
+        }
+
+        /* Force dark shell across Streamlit Cloud */
+        html, body, .stApp,
+        [data-testid="stAppViewContainer"],
+        [data-testid="stAppViewBlockContainer"],
+        .main, section.main,
+        .block-container {
+            background-color: #070B14 !important;
+            color: #E8EEF7 !important;
         }
 
         .stApp {
-            background: 
-                radial-gradient(ellipse 80% 50% at 20% -10%, rgba(56, 189, 248, 0.07), transparent),
-                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(99, 102, 241, 0.05), transparent),
-                var(--bg) !important;
-            color: var(--text) !important;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% -10%, rgba(56, 189, 248, 0.08), transparent),
+                radial-gradient(ellipse 60% 40% at 90% 10%, rgba(99, 102, 241, 0.06), transparent),
+                #070B14 !important;
+            color: #E8EEF7 !important;
         }
 
-        /* Global text */
-        .stApp, .stMarkdown, p, span, label, div {
-            color: var(--text) !important;
+        /* Header / toolbar */
+        [data-testid="stHeader"],
+        header[data-testid="stHeader"] {
+            background: rgba(7, 11, 20, 0.9) !important;
+            backdrop-filter: blur(8px);
         }
-        h1, h2, h3, h4, h5, h6 {
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6,
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
             color: #F8FAFC !important;
-            text-shadow: 0 0 40px rgba(56, 189, 248, 0.15);
+            font-family: 'Space Grotesk', 'Inter', sans-serif !important;
         }
-        .stCaption, [data-testid="stCaptionContainer"] {
-            color: var(--text-muted) !important;
+        .stMarkdown, .stText, p, label, span {
+            color: #E8EEF7 !important;
+        }
+        .stCaption, [data-testid="stCaptionContainer"], small {
+            color: #8B9CB3 !important;
         }
 
-        /* Sidebar — deep glass */
-        [data-testid="stSidebar"] {
+        /* Sidebar */
+        [data-testid="stSidebar"],
+        section[data-testid="stSidebar"],
+        [data-testid="stSidebar"] > div {
             background: linear-gradient(180deg, #0B1220 0%, #0A101C 100%) !important;
-            border-right: 1px solid var(--border) !important;
-            box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+            border-right: 1px solid #1E2A3A !important;
         }
-        [data-testid="stSidebar"] * {
-            color: var(--text) !important;
-        }
-        [data-testid="stSidebar"] .stMarkdown h1,
-        [data-testid="stSidebar"] .stMarkdown h2,
-        [data-testid="stSidebar"] .stMarkdown h3 {
-            color: #F1F5F9 !important;
+        [data-testid="stSidebar"] .stMarkdown,
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] span,
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3 {
+            color: #E8EEF7 !important;
         }
 
         /* Metrics */
-        .stMetric > label {
-            color: var(--accent) !important;
-            opacity: 0.95;
+        [data-testid="stMetric"], .stMetric {
+            background: transparent !important;
+        }
+        .stMetric > label,
+        [data-testid="stMetricLabel"] {
+            color: #38BDF8 !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
         }
         .stMetric [data-testid="stMetricValue"] {
             color: #F8FAFC !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-weight: 700 !important;
         }
-        .stMetric [data-testid="stMetricDelta"] {
-            color: var(--text-muted) !important;
+        [data-testid="stMetricDelta"] {
+            color: #8B9CB3 !important;
         }
 
-        /* Cards — elevated glass surfaces */
+        /* Cards */
         .metric-container, .section-card {
-            background: linear-gradient(145deg, rgba(22, 30, 46, 0.85), rgba(15, 22, 35, 0.9)) !important;
-            border: 1px solid rgba(56, 189, 248, 0.12) !important;
-            box-shadow: 
-                0 4px 24px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: linear-gradient(145deg, #161E2E, #0F1623) !important;
+            border: 1px solid rgba(56, 189, 248, 0.14) !important;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+            color: #E8EEF7 !important;
+            border-radius: 14px !important;
+            padding: 1.25rem 1.5rem !important;
+            margin-bottom: 1rem !important;
         }
         .metric-container {
-            border-left: 4px solid var(--accent) !important;
+            border-left: 4px solid #38BDF8 !important;
         }
         .section-card {
-            border-top: 3px solid var(--accent) !important;
-        }
-        .metric-container:hover, .section-card:hover {
-            border-color: rgba(56, 189, 248, 0.25) !important;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(56, 189, 248, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+            border-top: 3px solid #38BDF8 !important;
         }
 
-        /* Dataframes — dark table */
-        .dataframe {
-            background: transparent !important;
-        }
+        /* Dataframes */
         .dataframe th {
             background: #1A2436 !important;
             color: #94A3B8 !important;
-            border-bottom: 1px solid var(--border) !important;
-            border-color: var(--border) !important;
+            border-color: #1E2A3A !important;
         }
         .dataframe td {
-            background: rgba(15, 22, 35, 0.6) !important;
-            color: var(--text) !important;
-            border-color: var(--border) !important;
+            background: rgba(15, 22, 35, 0.85) !important;
+            color: #E8EEF7 !important;
+            border-color: #1E2A3A !important;
         }
         .dataframe tr:hover td {
-            background: rgba(56, 189, 248, 0.06) !important;
+            background: rgba(56, 189, 248, 0.08) !important;
         }
-
-        /* Streamlit data editor / dataframe container */
-        [data-testid="stDataFrame"],
+        div[data-testid="stDataFrame"],
+        div[data-testid="stDataFrame"] > div,
         [data-testid="stTable"] {
-            background: transparent !important;
-        }
-        div[data-testid="stDataFrame"] > div {
-            background: var(--surface) !important;
-            border: 1px solid var(--border) !important;
-            border-radius: var(--radius) !important;
+            background: #0F1623 !important;
+            border: 1px solid #1E2A3A !important;
+            border-radius: 14px !important;
         }
 
         /* Buttons */
-        .stButton > button {
+        .stButton > button,
+        .stDownloadButton > button,
+        button[kind="primary"] {
             background: linear-gradient(135deg, #0EA5E9, #38BDF8) !important;
             color: #0B0F19 !important;
-            font-weight: 600 !important;
             border: none !important;
+            border-radius: 9px !important;
+            font-weight: 600 !important;
             box-shadow: 0 2px 12px rgba(14, 165, 233, 0.35) !important;
         }
-        .stButton > button:hover {
+        .stButton > button:hover,
+        .stDownloadButton > button:hover {
             background: linear-gradient(135deg, #0284C7, #0EA5E9) !important;
-            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.5) !important;
-            transform: translateY(-1px);
+            color: #0B0F19 !important;
+        }
+        /* Keep sidebar action buttons readable */
+        [data-testid="stSidebar"] .stButton > button {
+            color: #0B0F19 !important;
         }
 
-        /* Alerts — muted dark versions */
+        /* Alerts */
+        .stWarning, div[data-testid="stAlert"] [data-baseweb="notification"] {
+            border-radius: 14px !important;
+        }
         .stWarning {
-            background: rgba(251, 191, 36, 0.1) !important;
-            border-left: 4px solid var(--warning) !important;
+            background: rgba(251, 191, 36, 0.12) !important;
+            border-left: 4px solid #FBBF24 !important;
             color: #FDE68A !important;
         }
         .stError {
-            background: rgba(248, 113, 113, 0.1) !important;
-            border-left: 4px solid var(--error) !important;
+            background: rgba(248, 113, 113, 0.12) !important;
+            border-left: 4px solid #F87171 !important;
             color: #FECACA !important;
         }
         .stSuccess {
-            background: rgba(52, 211, 153, 0.1) !important;
-            border-left: 4px solid var(--success) !important;
+            background: rgba(52, 211, 153, 0.12) !important;
+            border-left: 4px solid #34D399 !important;
             color: #A7F3D0 !important;
         }
         .stInfo {
-            background: rgba(56, 189, 248, 0.1) !important;
-            border-left: 4px solid var(--accent) !important;
+            background: rgba(56, 189, 248, 0.12) !important;
+            border-left: 4px solid #38BDF8 !important;
             color: #BAE6FD !important;
         }
 
-        /* Inputs & widgets */
+        /* Inputs */
         .stTextInput input, .stNumberInput input,
         [data-baseweb="input"] input,
         [data-baseweb="select"] > div,
         .stDateInput input {
-            background: var(--surface-2) !important;
-            color: var(--text) !important;
-            border: 1px solid var(--border) !important;
-            border-radius: 8px !important;
+            background: #151E2E !important;
+            color: #E8EEF7 !important;
+            border: 1px solid #1E2A3A !important;
+            border-radius: 9px !important;
         }
         .stTextInput input:focus, .stNumberInput input:focus {
-            border-color: var(--accent) !important;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2) !important;
+            border-color: #38BDF8 !important;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.22) !important;
         }
 
         /* File uploader */
-        [data-testid="stFileUploader"] {
-            background: var(--surface-2) !important;
-            border: 1px dashed rgba(56, 189, 248, 0.3) !important;
-            border-radius: var(--radius) !important;
+        [data-testid="stFileUploader"],
+        [data-testid="stFileUploader"] section {
+            background: #151E2E !important;
+            border: 1.5px dashed rgba(56, 189, 248, 0.35) !important;
+            border-radius: 14px !important;
+            color: #E8EEF7 !important;
+        }
+
+        /* Radio / checkbox / toggle */
+        [data-testid="stRadio"] label,
+        [data-testid="stCheckbox"] label,
+        .stCheckbox label, .stToggle label {
+            color: #E8EEF7 !important;
         }
 
         /* Expander */
+        [data-testid="stExpander"],
         .streamlit-expanderHeader {
-            background: var(--surface) !important;
-            color: var(--text) !important;
-            border-radius: 8px !important;
-        }
-
-        /* Checkbox / toggle */
-        .stCheckbox label, .stToggle label {
-            color: var(--text) !important;
+            background: #0F1623 !important;
+            border: 1px solid #1E2A3A !important;
+            border-radius: 10px !important;
+            color: #E8EEF7 !important;
         }
 
         /* Divider */
         hr {
-            border-color: var(--border) !important;
-            opacity: 0.6;
+            border-color: #1E2A3A !important;
+            opacity: 0.7;
         }
 
-        /* Plotly chart container subtle glow */
+        /* Plotly */
+        [data-testid="stPlotlyChart"],
         .js-plotly-plot {
+            background: transparent !important;
             border-radius: 12px;
-            overflow: hidden;
         }
 
         /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2A3A50;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3B4F6B;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #070B14; }
+        ::-webkit-scrollbar-thumb { background: #2A3A50; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3B4F6B; }
     </style>
     """, unsafe_allow_html=True)
 
