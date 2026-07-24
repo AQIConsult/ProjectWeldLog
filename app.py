@@ -1060,6 +1060,30 @@ if dark_mode:
             border-radius: 14px !important;
             color: #E8EEF7 !important;
         }
+        /* Browse / upload button — dark text on cyan for readability */
+        [data-testid="stFileUploader"] button,
+        [data-testid="stFileUploader"] [data-testid="baseButton-secondary"],
+        [data-testid="stFileUploader"] [data-testid="stBaseButton-secondary"],
+        [data-testid="stFileUploaderDropzone"] button,
+        section[data-testid="stFileUploaderDropzone"] button {
+            background: linear-gradient(135deg, #0EA5E9, #38BDF8) !important;
+            color: #0B0F19 !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+        }
+        [data-testid="stFileUploader"] button *,
+        [data-testid="stFileUploaderDropzone"] button * {
+            color: #0B0F19 !important;
+        }
+        /* Dropzone helper text */
+        [data-testid="stFileUploaderDropzone"],
+        [data-testid="stFileUploaderDropzone"] span,
+        [data-testid="stFileUploaderDropzone"] small,
+        [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzoneInstructions"],
+        [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzoneInstructions"] * {
+            color: #CBD5E1 !important;
+        }
 
         /* Radio / checkbox / toggle */
         [data-testid="stRadio"] label,
