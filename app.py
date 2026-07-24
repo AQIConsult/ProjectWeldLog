@@ -302,6 +302,29 @@ st.markdown("""
         border-radius: var(--radius) !important;
     }
 
+    /* App logo — prevent top/side clipping */
+    .app-logo-wrap {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        padding-top: 0.35rem !important;
+        overflow: visible !important;
+        min-height: 72px !important;
+    }
+    .app-logo-wrap img,
+    [data-testid="stImage"] img,
+    div[data-testid="stImage"] img {
+        object-fit: contain !important;
+        object-position: center center !important;
+        max-height: 88px !important;
+        width: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+    div[data-testid="stImage"] {
+        overflow: visible !important;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -774,12 +797,19 @@ def generate_summary_report_pdf(report_type, period_label, metrics, weld_type_su
 
 
 
-title_col, logo_col = st.columns([4, 1])
+title_col, logo_col = st.columns([3.2, 1.2], gap="medium")
 with title_col:
     st.title("Project Weld Log & NDE Analytics")
     st.caption("Developed by AQI ltd.")
 with logo_col:
-    if os.path.exists(LOGO_PATH): st.image(LOGO_PATH, width=300)
+    if os.path.exists(LOGO_PATH):
+        # use_container_width keeps full logo visible (no top/side crop)
+        st.markdown(
+            '<div class="app-logo-wrap">',
+            unsafe_allow_html=True,
+        )
+        st.image(LOGO_PATH, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def get_db_session(): return SessionLocal()
 def load_data_from_db():
@@ -1058,6 +1088,23 @@ if dark_mode:
         .js-plotly-plot {
             background: transparent !important;
             border-radius: 12px;
+        }
+
+        /* App logo — keep fully visible in dark mode */
+        .app-logo-wrap {
+            overflow: visible !important;
+        }
+        .app-logo-wrap img,
+        [data-testid="stImage"] img,
+        div[data-testid="stImage"] img {
+            object-fit: contain !important;
+            object-position: center center !important;
+            max-height: 88px !important;
+            width: auto !important;
+            height: auto !important;
+        }
+        div[data-testid="stImage"] {
+            overflow: visible !important;
         }
 
         /* Scrollbar */
