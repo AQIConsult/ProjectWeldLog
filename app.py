@@ -202,28 +202,38 @@ st.markdown("""
         overflow: hidden;
     }
 
-    /* Buttons */
+    /* Buttons — pure white label on blue for contrast */
     .stButton > button,
+    .stDownloadButton > button,
     button[kind="primary"],
-    button[data-testid="baseButton-primary"] {
-        background: linear-gradient(135deg, #2563EB, #3B82F6) !important;
-        color: #FFFFFF !important;
-        border: none !important;
-        border-radius: 9px !important;
-        font-weight: 600 !important;
-        font-family: 'Inter', sans-serif !important;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28) !important;
-    }
-    .stButton > button:hover {
+    button[data-testid="baseButton-primary"],
+    button[data-testid="baseButton-secondary"] {
         background: linear-gradient(135deg, #1D4ED8, #2563EB) !important;
         color: #FFFFFF !important;
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35) !important;
-    }
-    .stDownloadButton > button {
-        background: linear-gradient(135deg, #2563EB, #3B82F6) !important;
-        color: #FFFFFF !important;
         border: none !important;
         border-radius: 9px !important;
+        font-weight: 700 !important;
+        font-family: 'Inter', sans-serif !important;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28) !important;
+        text-shadow: none !important;
+    }
+    .stButton > button *,
+    .stDownloadButton > button *,
+    button[kind="primary"] *,
+    button[data-testid="baseButton-primary"] *,
+    button[data-testid="baseButton-secondary"] * {
+        color: #FFFFFF !important;
+        fill: #FFFFFF !important;
+    }
+    .stButton > button:hover,
+    .stDownloadButton > button:hover {
+        background: linear-gradient(135deg, #1E40AF, #1D4ED8) !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
+    }
+    .stButton > button:hover *,
+    .stDownloadButton > button:hover * {
+        color: #FFFFFF !important;
     }
 
     /* Sidebar */
@@ -233,16 +243,24 @@ st.markdown("""
         background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
         border-right: 1px solid #E2E8F0 !important;
     }
-    [data-testid="stSidebar"] * {
-        color: #0F172A !important;
-    }
+    [data-testid="stSidebar"] .stMarkdown,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] span,
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] .stMarkdown {
+    [data-testid="stSidebar"] h3 {
         color: #0F172A !important;
     }
-    [data-testid="stSidebar"] .stButton > button {
+    /* Sidebar buttons must stay white-on-blue (override sidebar text color) */
+    [data-testid="stSidebar"] .stButton > button,
+    [data-testid="stSidebar"] .stDownloadButton > button {
+        background: linear-gradient(135deg, #1D4ED8, #2563EB) !important;
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+    }
+    [data-testid="stSidebar"] .stButton > button *,
+    [data-testid="stSidebar"] .stDownloadButton > button * {
         color: #FFFFFF !important;
     }
 
