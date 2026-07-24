@@ -1,0 +1,7 @@
+streamlit>=1.28.0
+pandas>=2.0.0
+sqlalchemy>=2.0.0
+pdfplumber>=0.10.0
+plotly>=5.18.0
+fpdf2>=2.7.0
+pillow>=10.0.0
